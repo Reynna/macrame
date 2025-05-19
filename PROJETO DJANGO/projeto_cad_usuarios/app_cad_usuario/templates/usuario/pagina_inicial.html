@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Ateliê</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --cor-primaria: #0cc7c7;
+        --cor-secundaria: #0a9e9e;
+        --cor-clara: #f8f9fa;
+        --cor-texto: #333;
+        --cor-destaque: #ff6b6b;
+        --verde-agua-claro: #a8e6cf;
+        --verde-agua-medio: #45b39f;
+        --verde-agua-escuro: #2e8f87;
+      }
+      
+      body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f5f5f5;
+        color: var(--cor-texto);
+      }
+      
+      .navbar-superior {
+        background: linear-gradient(90deg, var(--cor-primaria), var(--cor-secundaria));
+        color: white;
+        padding: 10px 20px;
+        font-size: 1.5rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .navbar-superior .navbar-brand {
+        font-size: 2rem;
+        font-weight: 600;
+        color: white;
+        display: flex;
+        align-items: center;
+      }
+      
+      .navbar-superior .navbar-brand i {
+        margin-right: 10px;
+      }
+
+      .menu-lateral {
+        background: linear-gradient(180deg, var(--cor-primaria), var(--cor-secundaria));
+        min-height: 100vh;
+        padding: 10px;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .menu-lateral .nav-link {
+        font-size: 1.1rem;
+        color: white;
+        margin-bottom: 15px;
+        padding: 10px 15px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+      }
+
+      .menu-lateral .nav-link:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        text-decoration: none;
+      }
+
+      .menu-lateral .nav-link i {
+        margin-right: 10px;
+        font-size: 1.3rem;
+      }
+      
+      .conteudo-principal {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 20px 0;
+        min-height: calc(100vh - 140px);
+      }
+      
+      .card-welcome {
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease;
+        margin-bottom: 25px;
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+      }
+      
+      .card-welcome:hover {
+        transform: translateY(-5px);
+      }
+      
+      .card-welcome .card-body {
+        padding: 30px;
+      }
+      
+      .card-welcome .card-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: var(--cor-primaria);
+        margin-bottom: 15px;
+      }
+      
+      .card-welcome .card-text {
+        font-size: 1.1rem;
+        color: #555;
+        margin-bottom: 20px;
+      }
+      
+      .welcome-icon {
+        font-size: 3rem;
+        color: var(--cor-primaria);
+        margin-bottom: 20px;
+      }
+      
+      .stats-card {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        margin-bottom: 20px;
+        text-align: center;
+        transition: all 0.3s ease;
+      }
+      
+      .stats-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+      }
+      
+      .stats-number {
+        font-size: 2.5rem;
+        font-weight: 600;
+        color: var(--cor-primaria);
+        margin: 10px 0;
+      }
+      
+      .stats-label {
+        font-size: 1rem;
+        color: #666;
+        font-weight: 500;
+      }
+      
+      .btn-custom {
+        background: var(--cor-primaria);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+      
+      .btn-custom:hover {
+        background: var(--cor-secundaria);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        color: white;
+      }
+      
+      .btn-acesso-rapido {
+        border-radius: 10px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 10px;
+        transition: all 0.3s ease;
+        border: 2px solid;
+        background-color: white;
+        text-decoration: none !important;
+      }
+
+      .btn-acesso-rapido i {
+        font-size: 2rem;
+        margin-bottom: 10px;
+        transition: all 0.3s ease;
+      }
+
+      .btn-acesso-rapido span {
+        transition: all 0.3s ease;
+      }
+
+      .btn-acesso-rapido:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+      
+      /* Estilos específicos para cada botão */
+      .btn-novo-projeto {
+        border-color: var(--cor-primaria) !important;
+        color: var(--cor-primaria);
+      }
+      
+      .btn-novo-projeto i, 
+      .btn-novo-projeto span {
+        color: var(--cor-primaria);
+      }
+      
+      .btn-novo-projeto:hover {
+        background-color: var(--cor-primaria) !important;
+      }
+      
+      .btn-novo-projeto:hover i,
+      .btn-novo-projeto:hover span {
+        color: white !important;
+      }
+      
+      .btn-adicionar-estoque {
+        border-color: var(--verde-agua-medio) !important;
+      }
+      
+      .btn-adicionar-estoque i,
+      .btn-adicionar-estoque span {
+        color: var(--verde-agua-medio);
+      }
+      
+      .btn-adicionar-estoque:hover {
+        background-color: var(--verde-agua-medio) !important;
+      }
+      
+      .btn-adicionar-estoque:hover i,
+      .btn-adicionar-estoque:hover span {
+        color: white !important;
+      }
+      
+      .btn-ver-relatorios {
+        border-color: var(--verde-agua-escuro) !important;
+      }
+      
+      .btn-ver-relatorios i,
+      .btn-ver-relatorios span {
+        color: var(--verde-agua-escuro);
+      }
+      
+      .btn-ver-relatorios:hover {
+        background-color: var(--verde-agua-escuro) !important;
+      }
+      
+      .btn-ver-relatorios:hover i,
+      .btn-ver-relatorios:hover span {
+        color: white !important;
+      }
+      
+      .btn-logout {
+        border-color: var(--cor-destaque) !important;
+      }
+      
+      .btn-logout i,
+      .btn-logout span {
+        color: var(--cor-destaque);
+      }
+      
+      .btn-logout:hover {
+        background-color: var(--cor-destaque) !important;
+      }
+      
+      .btn-logout:hover i,
+      .btn-logout:hover span {
+        color: white !important;
+      }
+      
+      @media (max-width: 768px) {
+        .menu-lateral {
+          min-height: auto;
+          padding: 10px;
+        }
+        
+        .conteudo-principal {
+          padding: 15px;
+        }
+        
+        .card-welcome .card-body {
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar superior -->
+    <nav class="navbar-superior">
+      <div class="container-fluid d-flex justify-content-between">
+        <span class="navbar-brand">
+          <i class="bi bi-house-door"></i> Meu Ateliê
+        </span>
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-gear"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+            <li><a class="dropdown-item" href="{% url 'usuario' %}">Usuários</a></li>
+            <li><a class="dropdown-item" href="{% url 'alterar_email' %}">Alterar Email</a></li>
+            <li><a class="dropdown-item" href="{% url 'alterar_senha' %}">Alterar Senha</a></li>
+            <li><a class="dropdown-item" href="{% url 'alterar_nome' %}">Alterar Nome</a></li>
+            <li><a class="dropdown-item" href="{% url 'logout' %}">Deslogar</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Menu Lateral -->
+        <div class="col-md-2" style="background-color:rgb(12, 199, 199); min-height: 100vh;">
+          <div class="menu-lateral">
+            <ul class="nav flex-column mt-4">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'pagina_inicial' %}">
+                  <i class="bi bi-house-door"></i> Página Inicial
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'projetos' %}">
+                  <i class="bi bi-clipboard-data"></i> Projetos
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'historico' %}">
+                  <i class="bi bi-clock-history"></i> Histórico
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'estoque' %}">
+                  <i class="bi bi-box-seam"></i> Estoque
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Conteúdo Principal -->
+        <div class="col-md-10">
+          <div class="conteudo-principal">
+            <!-- Card de Boas-vindas -->
+            <div class="card card-welcome">
+              <div class="card-body text-center">
+                <i class="bi bi-emoji-smile welcome-icon"></i>
+                <h2 class="card-title">Olá, {{ request.user.first_name }}!</h2>
+                <p class="card-text">Bem-vindo(a) ao seu ateliê. Aqui você pode gerenciar seus projetos, estoque e acompanhar todo o histórico de atividades.</p>
+                <a href="{% url 'projetos' %}" class="btn btn-custom">Comece a gerenciar seus projetos</a>
+              </div>
+            </div>
+
+            <!-- Seção de Estatísticas -->
+            <div class="row mt-4">
+              <div class="col-md-4">
+                <div class="stats-card">
+                  <i class="bi bi-clipboard-data" style="font-size: 1.5rem; color: var(--cor-primaria);"></i>
+                  <div class="stats-number">{{ projetos_ativos }}</div>
+                  <div class="stats-label">Projetos Ativos</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="stats-card">
+                  <i class="bi bi-box-seam" style="font-size: 1.5rem; color: var(--cor-primaria);"></i>
+                  <div class="stats-number">{{ itens_estoque }}</div>
+                  <div class="stats-label">Itens em Estoque</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="stats-card">
+                  <i class="bi bi-clock-history" style="font-size: 1.5rem; color: var(--cor-primaria);"></i>
+                  <div class="stats-number">{{ registros_total }}</div>
+                  <div class="stats-label">Registros no Total</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Seção de Acesso Rápido -->
+            <div class="row mt-4">
+              <div class="col-12">
+                <h4 class="mb-4" style="color: var(--cor-primaria); font-weight: 600;">Acesso Rápido</h4>
+              </div>
+              <div class="col-md-3 mb-3">
+                <a href="{% url 'projetos' %}" class="btn btn-acesso-rapido btn-novo-projeto">
+                  <i class="bi bi-plus-circle"></i>
+                  <span>Novo Projeto</span>
+                </a>
+              </div>
+              <div class="col-md-3 mb-3">
+                <a href="{% url 'estoque' %}" class="btn btn-acesso-rapido btn-adicionar-estoque">
+                  <i class="bi bi-box-arrow-in-down"></i>
+                  <span>Adicionar Estoque</span>
+                </a>
+              </div>
+              <div class="col-md-3 mb-3">
+                <a href="{% url 'historico' %}" class="btn btn-acesso-rapido btn-ver-relatorios">
+                  <i class="bi bi-graph-up"></i>
+                  <span>Ver Relatórios</span>
+                </a>
+              </div>
+              <div class="col-md-3 mb-3">
+                <a href="{% url 'logout' %}" class="btn btn-acesso-rapido btn-logout">
+                  <i class="bi bi-power"></i>
+                  <span>Logout</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        console.log('Página carregada!');
+      });
+    </script>
+  </body>
+</html>

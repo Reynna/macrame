@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+      /* Estilo para a faixa superior */
+      .navbar-superior {
+        background: linear-gradient(90deg, #0cc7c7, #0a9e9e); /* Gradiente horizontal */
+        color: white;
+        padding: 10px 20px; /* Reduz a altura da faixa */
+        font-size: 1.5rem; /* Ajusta o tamanho da fonte geral */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra */
+      }
+
+      .navbar-superior .navbar-brand {
+        font-size: 2rem; /* Aumenta o tamanho do título */
+        font-weight: bold;
+        color: white;
+      }
+
+      /* Estilo para o menu lateral */
+      .menu-lateral {
+        background: linear-gradient(180deg, #0cc7c7, #0a9e9e); /* Gradiente */
+        min-height: 100vh;
+        padding: 10px;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Sombra */
+      }
+
+      .menu-lateral .nav-link {
+        font-size: 1.8rem; /* Aumenta o tamanho da fonte */
+        color: white;
+        margin-bottom: 15px;
+        padding: 10px 15px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+
+      .menu-lateral .nav-link:hover {
+        background-color: rgba(255, 255, 255, 0.2); /* Fundo ao passar o mouse */
+        text-decoration: none;
+      }
+
+      .menu-lateral .nav-link i {
+        margin-right: 10px; /* Espaçamento entre o ícone e o texto */
+      }
+
+      /* Espaçamento para o conteúdo principal */
+      .col-md-10 {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar superior ajustada -->
+    <nav class="navbar-superior">
+      <div class="container-fluid d-flex justify-content-between">
+        <span class="navbar-brand">
+          <i class="bi bi-clock-history"></i> Histórico
+        </span>
+        <!-- Botão de opções -->
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-gear"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+            <li><a class="dropdown-item" href="{% url 'usuario' %}">Usuários</a></li>
+            <li><a class="dropdown-item" href="{% url 'alterar_email' %}">Alterar Email</a></li>
+            <li><a class="dropdown-item" href="{% url 'alterar_senha' %}">Alterar Senha</a></li>
+            <li><a class="dropdown-item" href="{% url 'alterar_nome' %}">Alterar Nome</a></li>
+            <li><a class="dropdown-item" href="{% url 'logout' %}">Deslogar</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Menu Lateral -->
+        <div class="col-md-2" style="background-color:rgb(12, 199, 199); min-height: 100vh;">
+          <div class="menu-lateral">
+            <ul class="nav flex-column mt-4">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'pagina_inicial' %}">
+                  <i class="bi bi-house-door"></i> Página Inicial
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'projetos' %}">
+                  <i class="bi bi-clipboard-data"></i> Projetos
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'historico' %}">
+                  <i class="bi bi-clock-history"></i> Histórico
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'estoque' %}">
+                  <i class="bi bi-box-seam"></i> Estoque
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Conteúdo Principal -->
+        <div class="col-md-10">
+          <div class="container mt-4">
+            <h1 class="text-center mt-5">Histórico</h1>
+
+            <!-- Tabela de Histórico -->
+            <table class="table table-bordered mt-5">
+              <thead class="table-light">
+                <tr>
+                  <th>Tabela</th>
+                  <th>Ação</th>
+                  <th>Descrição</th>
+                  <th>Data e Hora</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for registro in page_obj %}
+                <tr>
+                  <td>{{ registro.tabela }}</td>
+                  <td>{{ registro.get_acao_display }}</td>
+                  <td>{{ registro.descricao }}</td>
+                  <td>{{ registro.data_hora|date:"d/m/Y H:i" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="4" class="text-center">Nenhum registro encontrado.</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
