@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estoque</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+      /* Estilos para os modais */
+      .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+
+      .modal-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        width: 400px;
+        max-width: 90%;
+        position: relative;
+      }
+
+      .modal-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+
+      /* Estilo para a faixa superior */
+      .navbar-superior {
+        background: linear-gradient(90deg, #0cc7c7, #0a9e9e); /* Gradiente horizontal */
+        color: white;
+        padding: 10px 20px; /* Reduz a altura da faixa */
+        font-size: 1.5rem; /* Ajusta o tamanho da fonte geral */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra */
+      }
+
+      .navbar-superior .navbar-brand {
+        font-size: 2rem; /* Aumenta o tamanho do título */
+        font-weight: bold;
+        color: white;
+      }
+
+      /* Estilo para o menu lateral */
+      .menu-lateral {
+        background: linear-gradient(180deg, #0cc7c7, #0a9e9e); /* Gradiente */
+        min-height: 100vh;
+        padding: 10px;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Sombra */
+      }
+
+      .menu-lateral .nav-link {
+        font-size: 1.8rem; /* Aumenta o tamanho da fonte */
+        color: white;
+        margin-bottom: 15px;
+        padding: 10px 15px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+
+      .menu-lateral .nav-link:hover {
+        background-color: rgba(255, 255, 255, 0.2); /* Fundo ao passar o mouse */
+        text-decoration: none;
+      }
+
+      .menu-lateral .nav-link i {
+        margin-right: 10px; /* Espaçamento entre o ícone e o texto */
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar superior ajustada -->
+    <nav class="navbar-superior">
+      <div class="container-fluid d-flex justify-content-between">
+        <span class="navbar-brand">
+          <i class="bi bi-box-seam"></i> Estoque
+        </span>
+        <!-- Botão de opções -->
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-gear"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+            <li><a class="dropdown-item" href="{% url 'usuario' %}">Usuários</a></li>
+            <li><a class="dropdown-item" href="{% url 'alterar_email' %}">Alterar Email</a></li>
+            <li><a class="dropdown-item" href="{% url 'alterar_senha' %}">Alterar Senha</a></li>
+            <li><a class="dropdown-item" href="{% url 'alterar_nome' %}">Alterar Nome</a></li>
+            <li><a class="dropdown-item" href="{% url 'logout' %}">Deslogar</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Menu Lateral -->
+        <div class="col-md-2" style="background-color:rgb(12, 199, 199); min-height: 100vh;">
+          <div class="menu-lateral">
+            <ul class="nav flex-column mt-4">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'pagina_inicial' %}">
+                  <i class="bi bi-house-door"></i> Página Inicial
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'projetos' %}">
+                  <i class="bi bi-clipboard-data"></i> Projetos
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'historico' %}">
+                  <i class="bi bi-clock-history"></i> Histórico
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'estoque' %}">
+                  <i class="bi bi-box-seam"></i> Estoque
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Conteúdo Principal (mantido igual) -->
+        <div class="col-md-10">
+          <div class="container mt-4">
+            <h1 class="text-center">Estoque</h1>
+
+            <!-- Tabela -->
+            <table class="table table-bordered mt-5">
+              <thead class="table-light">
+                <tr>
+                  <th>Material</th>
+                  <th>Cor</th>
+                  <th>Quantidade (em metros)</th>
+                  <th class="acoes-coluna" style="display: none;">Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in itens %}
+                <tr>
+                  <td>{{ item.material }}</td>
+                  <td>{{ item.cor }}</td>
+                  <td>{{ item.quantidade_metros }}</td>
+                  <td class="acoes-coluna" style="display: none;">
+                    <button class="btn btn-warning" onclick="abrirEditarItem('{{ item.id }}', '{{ item.material }}', '{{ item.cor }}', '{{ item.quantidade_metros }}')">
+                      Editar
+                    </button>
+                    <button class="btn btn-danger" onclick="excluirItem('{{ item.id }}')">Excluir</button>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+
+            <!-- Botões -->
+            <div class="text-center mt-4">
+              <button class="btn btn-primary" onclick="abrirModalAdicionar()">Adicionar Item</button>
+              <button class="btn btn-secondary" id="btnEditarEstoque">Editar Estoque</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pop-up Adicionar Item -->
+    <div class="modal" id="modalAdicionarItem">
+      <div class="modal-content">
+        <button class="modal-close" onclick="fecharModalAdicionar()">×</button>
+        <h4 class="text-center">Adicionar Item</h4>
+        <form method="post" action="{% url 'estoque' %}">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="material" class="form-label">Material</label>
+            <input type="text" class="form-control" id="material" name="material" required>
+          </div>
+          <div class="mb-3">
+            <label for="cor" class="form-label">Cor</label>
+            <input type="text" class="form-control" id="cor" name="cor" required>
+          </div>
+          <div class="mb-3">
+            <label for="quantidade" class="form-label">Quantidade</label>
+            <input type="number" class="form-control" id="quantidade" name="quantidade" required>
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary">Adicionar Item</button>
+            <button type="button" class="btn btn-secondary" onclick="fecharModalAdicionar()">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Pop-up Editar Item -->
+    <div class="modal" id="modalEditarItem">
+      <div class="modal-content">
+        <button class="modal-close" onclick="fecharModalEditar()">×</button>
+        <h4 class="text-center">Editar Item</h4>
+        <form method="post" action="{% url 'editar_item' %}">
+          {% csrf_token %}
+          <input type="hidden" id="editarId" name="id">
+          <div class="mb-3">
+            <label for="editarMaterial" class="form-label">Material</label>
+            <input type="text" class="form-control" id="editarMaterial" name="material" required>
+          </div>
+          <div class="mb-3">
+            <label for="editarCor" class="form-label">Cor</label>
+            <input type="text" class="form-control" id="editarCor" name="cor" required>
+          </div>
+          <div class="mb-3">
+            <label for="editarQuantidade" class="form-label">Quantidade</label>
+            <input type="number" class="form-control" id="editarQuantidade" name="quantidade" required>
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-success">Salvar</button>
+            <button type="button" class="btn btn-secondary" onclick="fecharModalEditar()">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      // Função para abrir o modal "Adicionar Item"
+      function abrirModalAdicionar() {
+        document.getElementById('modalAdicionarItem').style.display = 'flex';
+      }
+
+      // Função para fechar o modal "Adicionar Item"
+      function fecharModalAdicionar() {
+        document.getElementById('modalAdicionarItem').style.display = 'none';
+      }
+
+      // Abrir o pop-up de editar item
+      function abrirEditarItem(id, material, cor, quantidade) {
+        document.getElementById('editarId').value = id;
+        document.getElementById('editarMaterial').value = material;
+        document.getElementById('editarCor').value = cor;
+        document.getElementById('editarQuantidade').value = quantidade;
+        document.getElementById('modalEditarItem').style.display = 'flex';
+      }
+
+      // Fechar o pop-up de editar item
+      function fecharModalEditar() {
+        document.getElementById('modalEditarItem').style.display = 'none';
+      }
+
+      // Função para excluir item
+      function excluirItem(id) {
+        if (confirm('Tem certeza que deseja excluir este item?')) {
+          fetch(`/estoque/excluir/${id}/`, { 
+            method: 'POST', 
+            headers: { 
+              'X-CSRFToken': '{{ csrf_token }}',
+              'Content-Type': 'application/json'
+            } 
+          })
+          .then(response => {
+            if (response.ok) {
+              location.reload();
+            } else {
+              alert('Erro ao excluir o item.');
+            }
+          })
+          .catch(error => {
+            console.error('Erro:', error);
+            alert('Ocorreu um erro ao excluir o item.');
+          });
+        }
+      }
+
+      // Alternar visibilidade da coluna "Ações"
+      document.getElementById('btnEditarEstoque').addEventListener('click', () => {
+        const acoesColunas = document.querySelectorAll('.acoes-coluna');
+        acoesColunas.forEach(coluna => {
+          coluna.style.display = coluna.style.display === 'none' ? 'table-cell' : 'none';
+        });
+      });
+    </script>
+  </body>
+</html>
